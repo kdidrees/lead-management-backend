@@ -4,7 +4,7 @@ const dealSchema = mongoose.Schema(
   {
     leadId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Lead",
+      ref: "leads",
     },
     stage: {
       type: String,
@@ -14,6 +14,8 @@ const dealSchema = mongoose.Schema(
         "Demo Scheduled",
         "Proposal Made",
         "Negotiations Started",
+        "Won",
+        "Lost",
       ],
       default: "Qualified",
     },

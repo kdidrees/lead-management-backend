@@ -11,8 +11,11 @@ const app = express();
 // middlewares
 app.use(express.json());
 
-async function ConnectDatabase(){
-  await mongoose.connect('')
+ConnectDatabase(); 
+
+async function ConnectDatabase() {
+  await mongoose.connect(process.env.DB_URI);
+  console.log("database connected");
 }
 
 // routes
@@ -21,5 +24,7 @@ app.use(leadRoutes);
 app.use(errorHandler); // error handling middleware
 
 app.listen(PORT, () => {
-  console.log(`the app is running at port ${PORT} `);
+  console.log(` server is running at port ${PORT} `);
 });
+
+
