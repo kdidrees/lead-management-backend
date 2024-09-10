@@ -1,21 +1,21 @@
 const mongoose = require("mongoose");
 const dealModel = require("../models/dealSchema");
-const dbConnection=require('../config/db')
 
 exports.dealController = async (req, res, next) => {
   try {
-    const leadId = '66e004853676fa682f9e11b7';
+    const { leadId } = req.body;
 
     // query the leads collection
-    const lead =dbConnection.db.collection("leads")
-      .find();
-      
-      
-    
+    const lead = await mongoose.connection
+      .collection("leads")
+      .findOne({ _id: new mongoose.Types.ObjectId(leadId) });
+
+    console.log(lead, "haha");
+
     if (!lead) {
-      return res.status(404).json({ message: "Lead not found",lead });
+      return res.status(404).json({ message: "Lead not found"});
     }
-  
+
     // create a deal by referencing the lead
 
     const newDeal = new dealModel({
