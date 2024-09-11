@@ -9,14 +9,11 @@ const {
 exports.dealController = async (req, res, next) => {
   try {
     const { leadId, stage } = req.body; // we will send the stage from frontend or by default it would be sent as Qualified
-
     // call the service to find  the lead by its ID
     const lead = await findLeadById(leadId);
-
     if (!lead) {
       return res.status(404).json({ message: "Lead not found" });
     }
-
     // use the service to create a new deal
     const newDeal = await createDeal(lead._id, stage);
 
@@ -31,7 +28,6 @@ exports.dealController = async (req, res, next) => {
 exports.updateDealStage = async (req, res, next) => {
   try {
     const { dealId, stage } = req.body;
-
     // call the service to update the deal stage
     const updateDeal = await updateDealStageById(dealId, stage);
 
