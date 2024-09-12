@@ -9,11 +9,11 @@ const dealSchema = mongoose.Schema(
     },
     pipelineId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "pipeline",
+      ref: "pipelines",
       required: true,
     },
-    stage: {
-      type: String, // Only store the name of the current stage
+    stageId: {
+      type: mongoose.Schema.Types.ObjectId, 
       required: true,
     },
   },

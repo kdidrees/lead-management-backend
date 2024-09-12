@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 const { createDealService } = require("../services/dealService");
 
 const createDeal = async (req, res) => {
-  const { leadId, pipelineId, stageName } = req.body;
+  const { leadId, pipelineId, stageId } = req.body;
 
   try {
-    const result = await createDealService(leadId, pipelineId, stageName);
+    const result = await createDealService(leadId, pipelineId, stageId);
     return res
       .status(result.status)
       .json({ message: result.message, deal: result.deal });
