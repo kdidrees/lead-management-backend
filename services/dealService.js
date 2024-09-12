@@ -1,10 +1,14 @@
 const dealModel = require("../models/dealSchema");
 const pipelineModel = require("../models/pipelineSchema");
+const mongoose = require("mongoose");
 
-const createDealService = async (leadId, stageName) => {
+const createDealService = async (leadId, pipelineId, stageName) => {
+  // Log the pipelineId for debugging
+  console.log("Received pipelineId:", pipelineId);
   try {
+    
     // Find the pipeline to get the stage information
-    const pipeline = await pipelineModel.findOne();
+    const pipeline = await pipelineModel.findById(pipelineId);
     if (!pipeline) {
       throw new Error("Pipeline not found");
     }
@@ -18,7 +22,8 @@ const createDealService = async (leadId, stageName) => {
     // Create a new deal with the selected stage name
     const newDeal = new dealModel({
       leadId,
-      stage: stage.name,
+      pipelineId,
+      stage: stageName,
     });
 
     await newDeal.save();

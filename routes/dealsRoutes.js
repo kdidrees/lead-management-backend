@@ -5,6 +5,6 @@ const router = express.Router();
 
 // route to convert the lead to deal
 
-router.post("/create", createDeal);
+router.post("/", createDeal);
 
 module.exports = router;

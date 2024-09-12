@@ -1,20 +1,19 @@
 const pipelineModel = require("../models/pipelineSchema");
 
-const createPipelineService = async (stages) => {
+const createPipeline = async (name, stages) => {
   try {
     // Ensure that stages are provided and formatted correctly
-    if (!stages || !stages.length) {
+    if (!name || !stages || !stages.length) {
       throw new Error("Stages are required to create a pipeline.");
     }
 
-    // Check if the pipeline already exists (you can allow one pipeline or multiple pipelines)
     const existingPipeline = await pipelineModel.findOne();
     // if (existingPipeline) {
     //   throw new Error("Pipeline already exists. You can update it instead.");
     // }
 
     // Create a new pipeline with the provided stages
-    const newPipeline = new pipelineModel({ stages });
+    const newPipeline = new pipelineModel({ name, stages });
     await newPipeline.save();
 
     return {
@@ -52,7 +51,6 @@ const updatePipelineStagesService = async (pipelineId, stages) => {
   } catch (error) {
     throw new Error("Error updating pipeline: " + error.message);
   }
-  
 };
 
 const deletePipeline = async (id) => {
@@ -65,12 +63,12 @@ const deletePipeline = async (id) => {
     }
     return { status: 200, message: "Pipeline deleted successfully" };
   } catch (error) {
-    throw new Error("error deleting pipeline" + error.message)
+    throw new Error("error deleting pipeline" + error.message);
   }
 };
 
 module.exports = {
-  createPipelineService,
+  createPipeline,
   updatePipelineStagesService,
-  deletePipeline
+  deletePipeline,
 };
