@@ -1,39 +1,33 @@
-const mongoose = require("mongoose");
 const dealModel = require("../models/dealSchema");
+const pipelineModel = require("../models/pipelineSchema");
 
-exports.findLeadById = async (leadId) => {
-  // Query the leads collection for a lead by ID
-  const lead = await mongoose.connection
-    .collection("leads")
-    .findOne({ _id: new mongoose.Types.ObjectId(leadId) });
-  return lead;
-};
+const createDealService = async (leadId, stageName) => {
+  try {
+    // Find the pipeline to get the stage information
+    const pipeline = await pipelineModel.findOne();
+    if (!pipeline) {
+      throw new Error("Pipeline not found");
+    }
 
-exports.createDeal = async (leadId, stage) => {
-  // check if a deal with this leadid already exist
-  const existingDeal = await dealModel.findOne({ leadId });
+    // Find the correct stage from the pipeline by name
+    const stage = pipeline.stages.find((s) => s.name === stageName);
+    if (!stage) {
+      throw new Error("Stage not found in the pipeline");
+    }
 
-  if (existingDeal) {
-    throw new Error("A deal with this lead already exists");
+    // Create a new deal with the selected stage name
+    const newDeal = new dealModel({
+      leadId,
+      stage: stage.name,
+    });
+
+    await newDeal.save();
+    return { status: 201, message: "Deal created successfully", deal: newDeal };
+  } catch (error) {
+    throw new Error("Error creating deal: " + error.message);
   }
-
-  // Create a new deal
-  const newDeal = new dealModel({
-    leadId,
-    stage,
-  });
-
-  // save the deal to the database
-  await newDeal.save();
-  return newDeal;
 };
 
-exports.updateDealStageById = async (dealId, stage) => {
-  // update the deal stage
-  const updateDeal = await dealModel.findByIdAndUpdate(
-    dealId,
-    { stage },
-    { new: true, runValidators: true }
-  );
-  return updateDeal;
+module.exports = {
+  createDealService,
 };

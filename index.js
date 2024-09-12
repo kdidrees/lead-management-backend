@@ -1,26 +1,34 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const PORT = process.env.PORT || 5000;
-const leadRoutes = require("./routes/leadsRoutes");
-const errorHandler = require("./middlewares/errorHandler");
 const ConnectDatabase = require("./config/db");
+const leadRoutes = require("./routes/dealsRoutes");
+const pipelineRoutes = require("./routes/pipelineRoutes");
+const errorHandler = require("./middlewares/errorHandler");
 
 dotenv.config();
 
-// connecting the database
-ConnectDatabase();
-
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-// middlewares
+// Middleware setup
 app.use(express.json());
 
-// routes
-app.use("/api", leadRoutes);
+ConnectDatabase()
+  .then(() => {
+    // Import and execute the seeding script
+    require("./utils/seedPipeline");
+  })
+  .catch((error) => {
+    console.error("Error connecting to the database:", error);
+  });
 
-app.use(errorHandler); // error handling middleware
+// Routes
+app.use("/api/deals", leadRoutes);
+app.use("/api/pipelines", pipelineRoutes);
+
+// Error handling middleware
+app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(` server is running at port ${PORT} `);
+  console.log(`Server is running at port ${PORT}`);
 });
