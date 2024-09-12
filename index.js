@@ -15,6 +15,7 @@ app.use(express.json());
 
 ConnectDatabase()
   .then(() => {
+    console.log("db connected ");
     // Import and execute the seeding script
     require("./utils/seedPipeline");
   })

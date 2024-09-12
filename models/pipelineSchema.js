@@ -11,9 +11,9 @@ const stageSchema = mongoose.Schema({
   },
 });
 
-const pipelineSchema = mongoose.Schema(
+const pipelineSchema = new mongoose.Schema(
   {
-    stages: [stageSchema], // List of stages in the pipeline
+    stages: [stageSchema], // List of stages in the pipeline  
   },
   {
     timestamps: true,
@@ -21,4 +21,4 @@ const pipelineSchema = mongoose.Schema(
 );
 
 const pipelineModel = mongoose.model("pipeline", pipelineSchema);
-module.exports = pipelineModel;
+module.exports = pipelineModel; 

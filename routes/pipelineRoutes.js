@@ -9,6 +9,6 @@ const router = express.Router();
 router.post("/", createPipeline);
 
 // PUT route to update the pipeline stages
-router.put("/stages", updatePipelineStages);
+router.put("/:pipelineId/stages", updatePipelineStages);
 
 module.exports = router;

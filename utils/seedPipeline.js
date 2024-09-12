@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const pipelineModel = require("../models/pipelineSchema");
-const ConnectDatabase = require("../config/db");  // Adjust the path according to your project structure
-
+const ConnectDatabase = require("../config/db"); 
 const defaultStages = [
   { name: "Qualified", order: 1 },
   { name: "Contact Made", order: 2 },
@@ -14,10 +13,6 @@ const defaultStages = [
 
 const seedPipeline = async () => {
   try {
-    // Connect to the database
-    await ConnectDatabase();
-
-    // Check for an existing pipeline
     const existingPipeline = await pipelineModel.findOne();
     if (!existingPipeline) {
       // Create and save the default pipeline
@@ -29,11 +24,7 @@ const seedPipeline = async () => {
     }
   } catch (error) {
     console.error("Error seeding pipeline:", error);
-  } finally {
-    // Close the database connection
-    mongoose.connection.close();
   }
 };
 
-// Execute the seeding script
 seedPipeline();

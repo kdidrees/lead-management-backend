@@ -1,6 +1,6 @@
 const pipelineModel = require("../models/pipelineSchema");
 
-const createPipeline = async (stages) => {
+const createPipelineService = async (stages) => {
   try {
     // Ensure that stages are provided and formatted correctly
     if (!stages || !stages.length) {
@@ -27,12 +27,17 @@ const createPipeline = async (stages) => {
   }
 };
 
-const updatePipelineStages = async (stages) => {
+const updatePipelineStagesService = async (pipelineId, stages) => {
   try {
-    // Find the existing pipeline
-    const pipeline = await pipelineModel.findOne();
+    // Find the pipeline by its ID
+    const pipeline = await pipelineModel.findById(pipelineId);
     if (!pipeline) {
       throw new Error("Pipeline not found");
+    }
+
+    // Validate stages array
+    if (!Array.isArray(stages) || stages.length === 0) {
+      throw new Error("Invalid stages data");
     }
 
     // Update the stages with the new order and names
@@ -48,8 +53,7 @@ const updatePipelineStages = async (stages) => {
     throw new Error("Error updating pipeline: " + error.message);
   }
 };
-
 module.exports = {
-  createPipeline,
-  updatePipelineStages,
+  createPipelineService,
+  updatePipelineStagesService,
 };
