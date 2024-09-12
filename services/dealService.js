@@ -32,6 +32,33 @@ const createDealService = async (leadId, pipelineId, stageId) => {
   }
 };
 
+const getDealsByPipelineId = async (pipelineId) => {
+  try {
+    const pipeline = await pipelineModel.findById(pipelineId);
+    if (!pipeline) {
+      throw new Error("pipeline not found");
+    }
+
+    // fetch all the deals for this pipeline
+    const deals = await dealModel.find({ pipelineId });
+
+    // structure deals by stages
+    const stagesWithDeals = pipeline.stages.map((stage) => ({
+      _id: stage._id,
+      name: stage.name,
+      order: stage.order,
+      deals: deals.filter(
+        (deal) => deal.stageId.toString() === stage._id.toString()
+      ),
+    }));
+
+    return stagesWithDeals;
+  } catch (error) {
+    throw new Error("error fetching details" + error.message);
+  }
+};
+
 module.exports = {
   createDealService,
+  getDealsByPipelineId,
 };

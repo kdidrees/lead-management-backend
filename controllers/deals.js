@@ -1,12 +1,16 @@
 const mongoose = require("mongoose");
 
-const { createDealService } = require("../services/dealService");
+const dealService = require("../services/dealService");
 
 const createDeal = async (req, res) => {
   const { leadId, pipelineId, stageId } = req.body;
 
   try {
-    const result = await createDealService(leadId, pipelineId, stageId);
+    const result = await dealService.createDealService(
+      leadId,
+      pipelineId,
+      stageId
+    );
     return res
       .status(result.status)
       .json({ message: result.message, deal: result.deal });
@@ -17,6 +21,20 @@ const createDeal = async (req, res) => {
   }
 };
 
+const getDealsBypipelineId = async (req, res, next) => {
+  const { pipelineId } = req.params;
+
+  try {
+    const result = await dealService.getDealsByPipelineId(pipelineId);
+    return res
+      .status(200)
+      .json({ message: "deals fetched successfully", stages: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createDeal,
+  getDealsBypipelineId
 };
