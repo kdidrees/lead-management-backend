@@ -1,7 +1,4 @@
-const {
-  createPipelineService,
-  updatePipelineStagesService,
-} = require("../services/pipelineService");
+ const pipelineService = require("../services/pipelineService");
 
 const createPipeline = async (req, res) => {
   const { stages } = req.body; // Array of stages with names and orders
@@ -31,7 +28,21 @@ const updatePipelineStages = async (req, res) => {
   }
 };
 
+
+const deletePipeline = async(req,res)=>{
+  const {id} = req.params;
+
+  try {
+    const result = await pipelineService.deletePipeline(id);
+    res.status(result.status).json({message:result.message})
+  } catch (error) {
+    res.status(500).json({message:"error deleting pipeline",error:error.message})
+  }
+}
+
+
 module.exports = {
   createPipeline,
   updatePipelineStages,
+  deletePipeline
 };

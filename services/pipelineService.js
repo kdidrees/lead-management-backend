@@ -9,9 +9,9 @@ const createPipelineService = async (stages) => {
 
     // Check if the pipeline already exists (you can allow one pipeline or multiple pipelines)
     const existingPipeline = await pipelineModel.findOne();
-    if (existingPipeline) {
-      throw new Error("Pipeline already exists. You can update it instead.");
-    }
+    // if (existingPipeline) {
+    //   throw new Error("Pipeline already exists. You can update it instead.");
+    // }
 
     // Create a new pipeline with the provided stages
     const newPipeline = new pipelineModel({ stages });
@@ -52,8 +52,25 @@ const updatePipelineStagesService = async (pipelineId, stages) => {
   } catch (error) {
     throw new Error("Error updating pipeline: " + error.message);
   }
+  
 };
+
+const deletePipeline = async (id) => {
+  try {
+    // find and delete pipeline
+
+    const result = await pipelineModel.findByIdAndDelete(id);
+    if (!result) {
+      throw new Error("pipeline not found");
+    }
+    return { status: 200, message: "Pipeline deleted successfully" };
+  } catch (error) {
+    throw new Error("error deleting pipeline" + error.message)
+  }
+};
+
 module.exports = {
   createPipelineService,
   updatePipelineStagesService,
+  deletePipeline
 };
