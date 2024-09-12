@@ -42,12 +42,30 @@ const getDealsByPipelineId = async (pipelineId) => {
     // fetch all the deals for this pipeline
     const deals = await dealModel.find({ pipelineId });
 
+    // access the leads collection
+    const leadsCollection = await mongoose.connection.collection("leads");
+
+    // fetch lead details for each deal asynchronously
+    const dealWithLeadDetails = await Promise.all(
+      deals.map(async (deal) => {
+        const leadDetails = await leadsCollection.findOne({
+          _id: new mongoose.Types.ObjectId(deal.leadId),
+        });
+
+        // attach the lead details to deal
+        return {
+          ...deal.toObject(),
+          leadDetails,
+        };
+      })
+    );
+
     // structure deals by stages
     const stagesWithDeals = pipeline.stages.map((stage) => ({
       _id: stage._id,
       name: stage.name,
       order: stage.order,
-      deals: deals.filter(
+      deals: dealWithLeadDetails.filter(
         (deal) => deal.stageId.toString() === stage._id.toString()
       ),
     }));
