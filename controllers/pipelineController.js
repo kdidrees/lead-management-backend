@@ -16,12 +16,15 @@ const createPipeline = async (req, res) => {
 };
 
 const updatePipelineStages = async (req, res) => {
-  const { pipelineId } = req.params; 
+  const { pipelineId } = req.params;
   const { stages } = req.body; // Array of updated stages with new order and names
 
   try {
     // Update pipeline stages via service
-    const result = await updatePipelineStagesService(pipelineId, stages);
+    const result = await pipelineService.updatePipelineStages(
+      pipelineId,
+      stages
+    );
     res
       .status(result.status)
       .json({ message: result.message, pipeline: result.pipeline });

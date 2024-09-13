@@ -7,8 +7,8 @@ const defaultStages = [
   { name: "Demo Scheduled", order: 3 },
   { name: "Proposal Made", order: 4 },
   { name: "Negotiations Started", order: 5 },
-  { name: "Won", order: 6 },
-  { name: "Lost", order: 7 },
+  // { name: "Won", order: 6 },
+  // { name: "Lost", order: 7 },
 ];
 
 const seedPipeline = async () => {

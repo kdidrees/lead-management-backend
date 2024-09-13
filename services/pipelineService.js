@@ -26,7 +26,7 @@ const createPipeline = async (name, stages) => {
   }
 };
 
-const updatePipelineStagesService = async (pipelineId, stages) => {
+const updatePipelineStages = async (pipelineId, stages) => {
   try {
     // Find the pipeline by its ID
     const pipeline = await pipelineModel.findById(pipelineId);
@@ -86,7 +86,7 @@ const getAllPipelines = async () => {
 
 module.exports = {
   createPipeline,
-  updatePipelineStagesService,
+  updatePipelineStages,
   deletePipeline,
   getAllPipelines
 };
