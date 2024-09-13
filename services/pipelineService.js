@@ -56,7 +56,7 @@ const updatePipelineStages = async (pipelineId, stages) => {
 
     return {
       status: 200,
-      message: "Pipeline stages updated successfully",
+      message: "success",
       pipeline,
     };
   } catch (error) {
