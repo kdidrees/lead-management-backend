@@ -43,8 +43,18 @@ const deletePipeline = async (req, res) => {
   }
 };
 
+const getAllPipelines = async (req, res, next) => {
+  try {
+    const result = await pipelineService.getAllPipelines();
+    res.status(result.status).json({ message: result.result });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createPipeline,
   updatePipelineStages,
   deletePipeline,
+  getAllPipelines,
 };

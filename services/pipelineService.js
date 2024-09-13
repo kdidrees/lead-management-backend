@@ -67,8 +67,23 @@ const deletePipeline = async (id) => {
   }
 };
 
+const getAllPipelines = async () => {
+  try {
+    const result = await pipelineModel.find();
+    if (!result) {
+      throw new Error("no pipeline found");
+    }
+    return {
+      status: 200,
+      message: "pipelines found",
+      result,
+    };
+  } catch (error) {}
+};
+
 module.exports = {
   createPipeline,
   updatePipelineStagesService,
   deletePipeline,
+  getAllPipelines
 };
