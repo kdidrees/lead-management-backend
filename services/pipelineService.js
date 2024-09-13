@@ -39,8 +39,19 @@ const updatePipelineStages = async (pipelineId, stages) => {
       throw new Error("Invalid stages data");
     }
 
-    // Update the stages with the new order and names
-    pipeline.stages = stages;
+    // iterate over the new stages and update the existing stages
+    stages.forEach((updatedStage) => {
+      const existingStage = pipeline.stages.id(updatedStage._id); // find by id
+
+      if (existingStage) {
+        // update only name and order field
+        existingStage.name = updatedStage.name;
+        existingStage.order = updatedStage.order;
+      } else {
+        throw new Error(`stage with ID ${updatedStage._id} not found`);
+      }
+    });
+
     await pipeline.save();
 
     return {
@@ -81,12 +92,9 @@ const getAllPipelines = async () => {
   } catch (error) {}
 };
 
-
-
-
 module.exports = {
   createPipeline,
   updatePipelineStages,
   deletePipeline,
-  getAllPipelines
+  getAllPipelines,
 };
