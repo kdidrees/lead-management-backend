@@ -76,7 +76,55 @@ const getDealsByPipelineId = async (pipelineId) => {
   }
 };
 
+const getFirstPipelineDeal = async () => {
+  try {
+    // Fetch the first pipeline (ordered by _id)
+    const pipeline = await pipelineModel.findOne().sort({ _id: 1 });
+
+    if (!pipeline) {
+      throw new Error("No pipelines found");
+    }
+
+    // Fetch all deals for this pipeline
+    const deals = await dealModel.find({ pipelineId: pipeline._id });
+
+    // Access the leads collection
+    const leadsCollection = await mongoose.connection.collection("leads");
+
+    // Fetch lead details for each deal asynchronously
+    const dealWithLeadDetails = await Promise.all(
+      deals.map(async (deal) => {
+        const leadDetails = await leadsCollection.findOne({
+          _id: new mongoose.Types.ObjectId(deal.leadId),
+        });
+
+        // Attach the lead details to deal
+        return {
+          ...deal.toObject(),
+          leadDetails,
+        };
+      })
+    );
+
+    // Structure deals by stages
+    const stagesWithDeals = pipeline.stages.map((stage) => ({
+      _id: stage._id,
+      name: stage.name,
+      order: stage.order,
+      deals: dealWithLeadDetails.filter(
+        (deal) => deal.stageId.toString() === stage._id.toString()
+      ),
+    }));
+
+    return stagesWithDeals;
+  } catch (error) {
+    throw new Error("Error fetching first pipeline deals: " + error.message);
+  }
+};
+
+
 module.exports = {
   createDealService,
   getDealsByPipelineId,
+  getFirstPipelineDeal
 };
