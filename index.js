@@ -4,6 +4,7 @@ const ConnectDatabase = require("./config/db");
 const leadRoutes = require("./routes/dealsRoutes");
 const pipelineRoutes = require("./routes/pipelineRoutes");
 const errorHandler = require("./middlewares/errorHandler");
+const cors = require("cors");
 
 dotenv.config();
 
@@ -12,7 +13,12 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware setup
 app.use(express.json());
-
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 ConnectDatabase()
   .then(() => {
     console.log("db connected ");
