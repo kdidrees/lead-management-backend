@@ -16,7 +16,7 @@ const createPipeline = async (req, res) => {
 };
 
 const updatePipelineStages = async (req, res) => {
-  const { pipelineId } = req.params; // Get pipelineId from route parameters
+  const { pipelineId } = req.params; 
   const { stages } = req.body; // Array of updated stages with new order and names
 
   try {

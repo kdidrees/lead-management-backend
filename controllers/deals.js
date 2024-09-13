@@ -24,6 +24,8 @@ const createDeal = async (req, res) => {
 const getDealsBypipelineId = async (req, res, next) => {
   const { pipelineId } = req.params;
 
+
+
   let result;
 
   if (pipelineId) {

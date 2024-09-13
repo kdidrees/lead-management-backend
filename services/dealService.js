@@ -72,7 +72,7 @@ const getDealsByPipelineId = async (pipelineId) => {
 
     return stagesWithDeals;
   } catch (error) {
-    throw new Error("error fetching details" + error.message);
+    throw new Error("error fetching details " + error.message);
   }
 };
 

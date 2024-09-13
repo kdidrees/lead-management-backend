@@ -6,6 +6,6 @@ const router = express.Router();
 // route to convert the lead to deal
 
 router.post("/", createDeal);
-router.get("/:pipelineId?/", getDealsBypipelineId);
+router.get("/:pipelineId?", getDealsBypipelineId);
 
 module.exports = router;
