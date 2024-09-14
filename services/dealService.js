@@ -70,7 +70,13 @@ const getDealsByPipelineId = async (pipelineId) => {
       ),
     }));
 
-    return stagesWithDeals;
+   
+
+    return {
+      name:pipeline.name,
+      id:pipeline._id,
+      stages: stagesWithDeals,
+    };
   } catch (error) {
     throw new Error("error fetching details " + error.message);
   }
@@ -116,15 +122,20 @@ const getFirstPipelineDeal = async () => {
       ),
     }));
 
-    return stagesWithDeals;
+
+
+    return {
+      name:pipeline.name,
+      id:pipeline._id,
+      stages: stagesWithDeals,
+    };
   } catch (error) {
     throw new Error("Error fetching first pipeline deals: " + error.message);
   }
 };
 
-
 module.exports = {
   createDealService,
   getDealsByPipelineId,
-  getFirstPipelineDeal
+  getFirstPipelineDeal,
 };

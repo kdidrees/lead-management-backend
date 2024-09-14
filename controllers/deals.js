@@ -24,10 +24,7 @@ const createDeal = async (req, res) => {
 const getDealsBypipelineId = async (req, res, next) => {
   const { pipelineId } = req.params;
 
-
-
   let result;
-
   if (pipelineId) {
     result = await dealService.getDealsByPipelineId(pipelineId);
   } else {
@@ -36,7 +33,12 @@ const getDealsBypipelineId = async (req, res, next) => {
 
   return res
     .status(200)
-    .json({ message: "deals fetched successfully", stages: result });
+    .json({
+      message: "success",
+      id: result.id,
+      name: result.name,
+      stages: result.stages,
+    });
 };
 
 module.exports = {
