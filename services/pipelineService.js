@@ -26,12 +26,19 @@ const createPipeline = async (name, stages) => {
   }
 };
 
-const updatePipelineStages = async (pipelineId, stages) => {
+const updatePipelineStages = async (data) => {
   try {
+    const { pipelineId, name, stages } = data;
+
     // Find the pipeline by its ID
     const pipeline = await pipelineModel.findById(pipelineId);
     if (!pipeline) {
       throw new Error("Pipeline not found");
+    }
+
+    // update the pipeline name if provided
+    if (name) {
+      pipeline.name = name;
     }
 
     // Validate stages array

@@ -31,14 +31,12 @@ const getDealsBypipelineId = async (req, res, next) => {
     result = await dealService.getFirstPipelineDeal();
   }
 
-  return res
-    .status(200)
-    .json({
-      message: "success",
-      id: result.id,
-      name: result.name,
-      stages: result.stages,
-    });
+  return res.status(200).json({
+    message: "success",
+    id: result.id,
+    name: result.name,
+    stages: result.stages,
+  });
 };
 
 module.exports = {
